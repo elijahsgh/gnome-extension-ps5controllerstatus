@@ -1,0 +1,8 @@
+{
+  "name": "PS5 Controller Status",
+  "description": "Get status and battery level for DualSense PS5 Controller",
+  "uuid": "ps5controllerstatus@esnyder.example.com",
+  "shell-version": [
+    "45"
+  ]
+}
