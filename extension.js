@@ -27,6 +27,7 @@ import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
 import Cogl from 'gi://Cogl';
+import Clutter from 'gi://Clutter';
 
 const upowerCommand = 'upower -i $(upower -e | grep ps_controller) | grep percent'
 
@@ -140,7 +141,7 @@ function updateIcon(indicator, statusText) {
                 indicator._icon.remove_effect_by_name('color');
             }
         
-            const colorizer = new Cogl.ColorizeEffect({tint: color});
+            const colorizer = new Clutter.ColorizeEffect({tint: color});
             indicator._icon.add_effect_with_name('color', colorizer);
             indicator._currentBatteryStatus = batteryStatus;
         }
