@@ -26,7 +26,7 @@ import * as PopupMenu from 'resource:///org/gnome/shell/ui/popupMenu.js';
 import * as Main from 'resource:///org/gnome/shell/ui/main.js';
 import Gio from 'gi://Gio';
 import GLib from 'gi://GLib';
-import Clutter from 'gi://Clutter';
+import Cogl from 'gi://Cogl';
 
 const upowerCommand = 'upower -i $(upower -e | grep ps_controller) | grep percent'
 
@@ -71,8 +71,7 @@ class Indicator extends PanelMenu.Button {
         }));
 
         hbox.add_child(this._buttonText = new St.Label({
-            text: '',
-            y_align: Clutter.ActorAlign.CENTER,
+            text: '--',
         }));
 
         this.add_child(hbox);
@@ -81,6 +80,7 @@ class Indicator extends PanelMenu.Button {
 
         item.connect('activate', () => {
             let statusText = getStatus();
+            let message = "Controller is not connected";
 
             updateIcon(this, statusText);
 
@@ -88,27 +88,27 @@ class Indicator extends PanelMenu.Button {
                 message = `Controller is connected: ${statusText}`;
             }
 
-            Main.notify(_(`Controller is not connected`))
+            Main.notify(_("Status"), _(message))
         });
 
         this.menu.addMenuItem(item);
 
         this._currentBatteryStatus = -1;
-        this._currentWarningLevelGreen = new Clutter.Color({
+        this._currentWarningLevelGreen = new Cogl.Color({
             red: 0,
             green: 255,
             blue: 0,
             alpha: 255,
         });
 
-        this._currentWarningLevelYellow = new Clutter.Color({
+        this._currentWarningLevelYellow = new Cogl.Color({
             red: 255,
             green: 255,
             blue: 0,
             alpha: 255,
         });
 
-        this._currentWarningLevelRed = new Clutter.Color({
+        this._currentWarningLevelRed = new Cogl.Color({
             red: 255,
             green: 0,
             blue: 0,
@@ -140,7 +140,7 @@ function updateIcon(indicator, statusText) {
                 indicator._icon.remove_effect_by_name('color');
             }
         
-            const colorizer = new Clutter.ColorizeEffect({tint: color});
+            const colorizer = new Cogl.ColorizeEffect({tint: color});
             indicator._icon.add_effect_with_name('color', colorizer);
             indicator._currentBatteryStatus = batteryStatus;
         }
